@@ -29,6 +29,9 @@ export interface Candidate {
   backgroundDetails: string;
   available: boolean;
   purchased?: boolean;
+  pdfData?: string;
+  pdfName?: string;
+  ownerId?: string;
 }
 
 export const candidates: Candidate[] = [
