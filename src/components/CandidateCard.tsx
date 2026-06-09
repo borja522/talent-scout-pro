@@ -1,4 +1,4 @@
-import { MapPin, Briefcase, ShieldCheck, ShieldAlert, ShieldQuestion, Lock, CheckCircle2 } from "lucide-react";
+import { MapPin, Briefcase, ShieldCheck, ShieldAlert, ShieldQuestion, Eye, FileText } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,6 @@ export const CandidateCard = ({ candidate, onView }: CandidateCardProps) => {
 
   return (
     <Card className="group relative flex flex-col overflow-hidden border-border bg-card p-5 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg">
-      {/* Score badge */}
       <div className="absolute right-4 top-4 flex flex-col items-end">
         <div className="flex items-baseline gap-0.5">
           <span className="text-2xl font-bold tabular-nums text-primary">{candidate.matchScore}</span>
@@ -36,31 +35,24 @@ export const CandidateCard = ({ candidate, onView }: CandidateCardProps) => {
           {candidate.initials}
         </div>
         <div className="min-w-0 flex-1">
-          <h3 className={`truncate text-base font-bold tracking-tight ${candidate.purchased ? "" : "blur-[3px] select-none"}`}>
-            {candidate.purchased ? candidate.name : "•••••• ••••••"}
-          </h3>
+          <h3 className="truncate text-base font-bold tracking-tight">{candidate.name}</h3>
           <p className="truncate text-sm font-medium text-foreground/80">{candidate.title}</p>
         </div>
       </div>
 
       <div className="mt-4 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-xs text-muted-foreground">
-        <span className="flex items-center gap-1">
-          <MapPin className="h-3.5 w-3.5" />
-          {candidate.location}
-        </span>
-        <span className="flex items-center gap-1">
-          <Briefcase className="h-3.5 w-3.5" />
-          {candidate.yearsExperience} años exp.
-        </span>
+        <span className="flex items-center gap-1"><MapPin className="h-3.5 w-3.5" />{candidate.location || "—"}</span>
+        <span className="flex items-center gap-1"><Briefcase className="h-3.5 w-3.5" />{candidate.yearsExperience} años exp.</span>
+        {candidate.pdfName && (
+          <span className="flex items-center gap-1 text-primary"><FileText className="h-3.5 w-3.5" />PDF</span>
+        )}
       </div>
 
       <p className="mt-3 line-clamp-2 text-sm leading-relaxed text-muted-foreground">{candidate.bio}</p>
 
       <div className="mt-3 flex flex-wrap gap-1.5">
         {candidate.hardSkills.slice(0, 4).map((s) => (
-          <Badge key={s.name} variant="secondary" className="text-[11px] font-medium">
-            {s.name}
-          </Badge>
+          <Badge key={s.name} variant="secondary" className="text-[11px] font-medium">{s.name}</Badge>
         ))}
         {candidate.hardSkills.length > 4 && (
           <Badge variant="outline" className="text-[11px]">+{candidate.hardSkills.length - 4}</Badge>
@@ -82,22 +74,9 @@ export const CandidateCard = ({ candidate, onView }: CandidateCardProps) => {
         )}
       </div>
 
-      <Button
-        onClick={() => onView(candidate)}
-        variant={candidate.purchased ? "outline" : "default"}
-        className="mt-4 w-full font-semibold"
-      >
-        {candidate.purchased ? (
-          <>
-            <CheckCircle2 className="mr-1.5 h-4 w-4" />
-            Ver perfil completo
-          </>
-        ) : (
-          <>
-            <Lock className="mr-1.5 h-4 w-4" />
-            Desbloquear · {candidate.price} créditos
-          </>
-        )}
+      <Button onClick={() => onView(candidate)} className="mt-4 w-full font-semibold">
+        <Eye className="mr-1.5 h-4 w-4" />
+        Ver perfil completo
       </Button>
     </Card>
   );
